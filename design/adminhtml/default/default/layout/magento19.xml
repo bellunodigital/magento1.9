@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <adminhtml_sales_order_view>
+        <reference name="sales_order_tabs">
+            <action method="addTab">
+                <name>magento19_order_view_tab</name>
+                <block>magento19/adminhtml_order_view_tab_contents</block>
+            </action>
+        </reference>
+    </adminhtml_sales_order_view>
+</layout>

@@ -1,0 +1,137 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <Belluno_Magento19>
+      <version>0.1.0</version>
+    </Belluno_Magento19>
+  </modules>
+
+  <default>
+    <payment>
+      <belluno_creditcardpayment>
+        <active>1</active>
+        <model>Belluno_Magento19_Model_Creditcard</model>
+        <title>Belluno - Credit Card</title>
+        <min_installment>0</min_installment>
+        <payment_action>authorize_capture</payment_action>
+      </belluno_creditcardpayment>
+      <belluno_bankslippayment>
+        <active>1</active>
+        <model>Belluno_Magento19_Model_Bankslip</model>
+        <title>Belluno - Bank Slip</title>
+        <days_expiration>1</days_expiration>
+        <payment_action>authorize</payment_action>
+        <capture_tax>1</capture_tax>
+      </belluno_bankslippayment>
+    </payment>
+  </default>
+
+  <global>
+
+    <fieldsets>
+      <sales_convert_quote_payment>
+        <check_no>
+          <to_order_payment>*</to_order_payment>
+        </check_no>
+        <check_date>
+          <to_order_payment>*</to_order_payment>
+        </check_date>
+      </sales_convert_quote_payment>
+    </fieldsets>
+    
+    <resources>
+      <magento19_setup>
+        <setup>
+          <module>Belluno_Magento19</module>
+        </setup>
+      </magento19_setup>
+    </resources>
+
+    <blocks>
+      <magento19>
+        <class>Belluno_Magento19_Block</class>
+      </magento19>
+      <checkout>
+        <rewrite>
+          <onepage_success>Belluno_Magento19_Block_Onepage_Success</onepage_success>
+        </rewrite>
+      </checkout>
+    </blocks>
+
+    <models>
+      <magento19>
+        <class>Belluno_Magento19_Model</class>
+      </magento19>
+    </models>
+
+    <validations>
+      <magento19>
+        <class>Belluno_Magento19_Validations</class>
+      </magento19>
+    </validations>
+
+    <services>
+      <magento19>
+        <class>Belluno_Magento19_Service</class>
+      </magento19>
+    </services>
+
+    <helpers>
+      <magento19>
+        <class>Belluno_Magento19_Helper</class>
+      </magento19>
+    </helpers>
+
+    <events>
+      <sales_order_save_before>
+        <observers>
+          <magento19>
+            <type>singleton</type>
+            <class>Belluno_Magento19_Model_Observer</class>
+            <method>cancelOrder</method>
+          </magento19>
+        </observers>
+      </sales_order_save_before>
+      <sales_order_place_after>
+        <observers>
+          <magento19>
+            <type>singleton</type>
+            <class>Belluno_Magento19_Model_Observer</class>
+            <method>updateStatusOrder</method>
+          </magento19>
+        </observers>
+      </sales_order_place_after>
+    </events>
+
+  </global>
+
+  <frontend>
+    <routers>
+      <magento19>
+        <use>standard</use>
+        <args>
+          <module>Belluno_Magento19</module>
+          <frontName>magento19</frontName>
+        </args>
+      </magento19>
+    </routers>
+    <layout>
+      <updates>
+        <magento19>
+          <file>magento19.xml</file>
+        </magento19>
+      </updates>
+    </layout>
+  </frontend>
+
+  <adminhtml>
+    <layout>
+      <updates>
+        <magento19>
+          <file>magento19.xml</file>
+        </magento19>
+      </updates>
+    </layout>
+  </adminhtml>
+
+</config>

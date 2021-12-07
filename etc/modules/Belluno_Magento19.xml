@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Belluno_Magento19>
+            <active>true</active>
+            <codePool>community</codePool>
+        </Belluno_Magento19>
+    </modules>
+</config>

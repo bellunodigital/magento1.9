@@ -1,0 +1,161 @@
+<fieldset class="form-creditcard" id="payment_form_<?= $this->getMethodCode() ?>" style="display:none">
+    <style>
+        .form-creditcard {
+            border: 1px solid gray;
+        }
+
+        .div-inputs {
+            border: 8px solid transparent;
+            border-top: 0px;
+        }
+
+        .div-inputs-hr {
+            border: 8px solid transparent;
+            border-top: 10px;
+        }
+
+        .row {
+            display: inline-block;
+        }
+    </style>
+
+    <?php
+    $totals = Mage::getSingleton('checkout/session')->getQuote()->getBaseGrandTotal();
+    $intallments = $this->getInstallments($totals);
+    $arrayImages = $this->getBrandImages();
+    $pubKey = $this->getPubKeyKonduto();
+    $captureTax = $this->getFieldCaptureTax();
+    ?>
+
+    <script type="text/javascript">
+        const s2 = document.createElement("script");
+        s2.id = "belluno";
+        s2.async = false;
+
+        document.getElementsByTagName("body")[0].appendChild(s2);
+        document.getElementById("belluno").innerHTML =
+            `var __kdt = __kdt || [];
+          __kdt.push({"public_key": "<?= $pubKey ?>"}); // A chave pública identifica a sua loja  
+            (function() {   
+              var kdt = document.createElement('script');   
+              kdt.id = 'kdtjs'; kdt.type = 'text/javascript';   
+              kdt.async = true;    kdt.src = 'https://i.k-analytix.com/k.js';   
+              var s = document.getElementsByTagName('body')[0];   
+              s.parentNode.insertBefore(kdt, s);
+               })();`;
+
+        var visitorID;
+
+        (function() {
+            var period = 300;
+            var limit = 20 * 1e3;
+            var nTry = 0;
+            var intervalID = setInterval(
+                function() {
+                    var clear = limit / period <= ++nTry;
+
+                    if ((typeof(Konduto) !== "undefined") && (typeof(Konduto.getVisitorID) !== "undefined")) {
+                        visitorID = window.Konduto.getVisitorID();
+                        const inputVisitorId = document.getElementById('visitor_id');
+                        inputVisitorId.value = visitorID;
+                        clear = true;
+                    }
+                    if (clear) {
+                        clearInterval(intervalID);
+                    }
+                },
+                period);
+
+        })(visitorID);
+    </script>
+
+    <div class="div-inputs">
+        <input type="hidden" id="visitor_id" name="payment[visitor_id]">
+
+        <div class="column">
+            <?php foreach ($arrayImages as $value) : ?>
+                <div class="row">
+                    <img id="brand_card" src="<?= $value ?>" />
+                </div>
+            <?php endforeach; ?>
+        </div>
+
+        <div>
+            <legend class="legend-creditcard">Número do Cartão</legend>
+            <input type="text" id="card_number" class="validate-cardnumber" name="payment[card_number]" onkeyup="maskCardNumber(this)" maxlength="19" />
+        </div>
+
+        <div class="div-month">
+            <legend class="legend-creditcard">Mês de Vencimento</legend>
+            <select id="card_month_exp" class="validate-month-exp" name="payment[card_month_exp]">
+                <?php foreach ($this->getCcMonths() as $key => $value) : ?>
+                    <?php if ($key == 0) {
+                        $key = "";
+                    } ?>
+                    <option value="<?= $key ?>"><?= $value ?></option>
+                <?php endforeach ?>
+            </select>
+        </div>
+
+        <div class="div-year">
+            <legend class="legend-creditcard">Ano de Vencimento</legend>
+            <select id="card_year_exp" class="validate-year-exp" name="payment[card_year_exp]">
+                <?php foreach ($this->getCcYears() as $key => $value) : ?>
+                    <?php if ($key == 0) {
+                        $index = 0;
+                    } else {
+                        $index = $value;
+                    } ?>
+                    <option value="<?= $index ?>"><?= $value ?></option>
+                <?php endforeach ?>
+            </select>
+        </div>
+
+        <div>
+            <legend class="legend-creditcard">Código de Verificação (CVV)</legend>
+            <input type="text" id="card_cvv" class="validate-cvv" name="payment[cc_cvv]" maxlength="3" />
+        </div>
+
+        <div>
+            <legend class="legend-creditcard">Nome do Titular</legend>
+            <input type="text" id="card_name" class="validate-name" name="payment[name_on_card]" />
+        </div>
+
+        <div>
+            <legend class="legend-creditcard">Cpf/Cnpj do titular do cartão</legend>
+            <input type="text" id="card_holder_document" class="validate-document" name="payment[card_holder_document]" onkeyup="maskDocument(this)" maxlength="18" />
+        </div>
+
+        <div>
+            <legend class="legend-creditcard">Data de Nascimento</legend>
+            <input type="text" id="card_holder_birth" class="validate-date" name="payment[card_holder_birth]" placeholder="00/00/0000" onkeyup="maskBirth(this)" maxlength="10" />
+        </div>
+
+        <div>
+            <legend class="legend-creditcard">Celular</legend>
+            <input type="text" id="card_holder_cellphone" class="validate-cellphone" name="payment[card_holder_cellphone]" placeholder="(00) 00000-0000" onkeyup="maskPhone(this)" maxlength="15" />
+        </div>
+
+        <div class="div-installment">
+            <legend class="legend-creditcard">Nº de Parcelas</legend>
+            <select id="card_installment" class="validate-installment" name="payment[card_installment]">
+                <?php foreach ($intallments as $key => $value) : ?>
+                    <?php if ($key == 0) {
+                        $key = "";
+                    } ?>
+                    <option value="<?= ($key) ?>"><?= $value ?></option>
+                <?php endforeach ?>
+            </select>
+        </div>
+    </div>
+
+    <?php if ($captureTax == true) : ?>
+        <div class="div-inputs-hr">
+            <div>
+                <legend class="legend-creditcard">Cpf/Cnpj do cliente</legend>
+                <input type="text" id="client_document" class="validate-document" name="payment[client_document]" onkeyup="maskDocument(this)" maxlength="18" />
+            </div>
+        </div>
+    <?php endif; ?>
+
+</fieldset>

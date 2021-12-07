@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+
+    <checkout_onepage_index translate="label">
+        <reference name="head">
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>js/form-belluno.js</name>
+            </action>
+        </reference>
+    </checkout_onepage_index>
+
+    <checkout_onepage_success>
+        <reference name="content">
+            <block type="magento19/onepage_success" template="magento19/success.phtml" />
+        </reference>
+        <reference name="head">
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>js/form-belluno.js</name>
+            </action>
+        </reference>
+    </checkout_onepage_success>
+
+    <sales_order_view>
+        <reference name="content">
+            <block type="magento19/order_info" template="magento19/info.phtml" />
+        </reference>
+    </sales_order_view>
+
+</layout>
