@@ -9,9 +9,9 @@ class Belluno_Magento19_Service_Connector {
   private function getUrlEnvironment(): string {
     $environment = Mage::getStoreConfig('payment/belluno_custompayment/environment');
     if ($environment == 'sandbox') {
-      return 'https://ws-sandbox.bellunopag.com.br/';
+      return 'https://ws-sandbox.bellunopag.com.br';
     } else {
-      return 'https://api.belluno.digital/';
+      return 'https://api.belluno.digital';
     }
   }
 
