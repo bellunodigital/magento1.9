@@ -34,7 +34,7 @@ class Belluno_Magento19_Validations_Encrypt {
    */
   public function getPublicKey() {
     $connector = new Belluno_Magento19_Service_Connector();
-    $response = $connector->doRequest("0", "GET", "transaction/card_hash_key");
+    $response = $connector->doRequest("0", "GET", "/transaction/card_hash_key");
     $response = json_decode($response, true);
     return $response;
   }
