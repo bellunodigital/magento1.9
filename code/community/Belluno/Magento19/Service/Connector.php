@@ -6,7 +6,7 @@ class Belluno_Magento19_Service_Connector {
    * Function to get url by environment
    * @return string
    */
-  private function getUrlEnvironment(): string {
+  private function getUrlEnvironment() {
     $environment = Mage::getStoreConfig('payment/belluno_custompayment/environment');
     if ($environment == 'sandbox') {
       return 'https://ws-sandbox.bellunopag.com.br';
@@ -19,7 +19,7 @@ class Belluno_Magento19_Service_Connector {
    * Function to get token
    * @return string
    */
-  private function getToken(): string {
+  private function getToken() {
     $token = "";
     $token = Mage::getStoreConfig('payment/belluno_custompayment/auth_token');
     return $token;
@@ -32,7 +32,7 @@ class Belluno_Magento19_Service_Connector {
    * @param string $uri
    * @return string
    */
-  public function doRequest($dataRequest, $method, $uri): string {
+  public function doRequest($dataRequest, $method, $uri) {
     $token = $this->getToken();
     $url = $this->getUrlEnvironment() . $uri;    
 

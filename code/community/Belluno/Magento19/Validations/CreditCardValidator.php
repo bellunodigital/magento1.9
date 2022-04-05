@@ -54,7 +54,7 @@ class Belluno_Magento19_Validations_CreditCardValidator
    * @param string $type
    * @return array
    */
-  public function validateCreditCard($number, $type = null): array
+  public function validateCreditCard($number, $type = null)
   {
     $returnDefault = [
       'valid' => false,
@@ -86,7 +86,7 @@ class Belluno_Magento19_Validations_CreditCardValidator
    * @param string $number
    * @return string $type
    */
-  public function getCardTypeBelluno($number): string
+  public function getCardTypeBelluno($number)
   {
     $arrayTypes = [
       '1' => 'mastercard',
@@ -144,7 +144,7 @@ class Belluno_Magento19_Validations_CreditCardValidator
    * @param string $number
    * @return string
    */
-  protected function creditCardType($number): string
+  protected function creditCardType($number)
   {
     foreach ($this->cards as $type => $card) {
       if (preg_match($card['pattern'], $number)) {
@@ -160,7 +160,7 @@ class Belluno_Magento19_Validations_CreditCardValidator
    * @param string $type
    * @return bool
    */
-  protected function validCard($number, $type): bool
+  protected function validCard($number, $type)
   {
     return ($this->validPattern($number, $type) && $this->validLength($number, $type));
   }
@@ -171,7 +171,7 @@ class Belluno_Magento19_Validations_CreditCardValidator
    * @param string $type
    * @return bool
    */
-  protected function validPattern($number, $type): bool
+  protected function validPattern($number, $type)
   {
     return preg_match($this->cards[$type]['pattern'], $number);
   }
@@ -182,7 +182,7 @@ class Belluno_Magento19_Validations_CreditCardValidator
    * @param string $type
    * @return bool
    */
-  protected function validLength($number, $type): bool
+  protected function validLength($number, $type)
   {
     foreach ($this->cards[$type]['length'] as $length) {
       if (strlen($number) == $length) {

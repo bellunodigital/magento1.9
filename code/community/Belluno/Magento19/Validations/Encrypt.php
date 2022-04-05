@@ -10,7 +10,7 @@ class Belluno_Magento19_Validations_Encrypt {
    * @param string $cardCvv
    * @return string
    */
-  public function encrypt($cardNumber, $cardExpMonth, $cardExpYear, $cardCvv): string {
+  public function encrypt($cardNumber, $cardExpMonth, $cardExpYear, $cardCvv) {
     (strlen($cardExpMonth) == 1) ? $cardExpMonth = "0$cardExpMonth" : $cardExpMonth = $cardExpMonth;
     $queryString = "card_number=$cardNumber&card_expiration_date=$cardExpMonth$cardExpYear&card_cvv=$cardCvv";
     
@@ -32,9 +32,9 @@ class Belluno_Magento19_Validations_Encrypt {
    * Function to get public key
    * @return array
    */
-  public function getPublicKey(): array {
+  public function getPublicKey() {
     $connector = new Belluno_Magento19_Service_Connector();
-    $response = $connector->doRequest("0", "GET", "transaction/card_hash_key");
+    $response = $connector->doRequest("0", "GET", "/transaction/card_hash_key");
     $response = json_decode($response, true);
     return $response;
   }
