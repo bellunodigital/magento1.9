@@ -41,6 +41,27 @@ class Belluno_Magento19_Block_Form_Creditcard extends Mage_Payment_Block_Form
     }
     return $years;
   }
+    /**
+   * Function to get token
+   */
+  public function getFullToken()
+  {
+    $token = Mage::getStoreConfig('payment/belluno_custompayment/auth_token');
+
+    return $token;
+  }
+    /**
+   * Function to get token
+   */
+  public function getServiceUrl()
+  {
+    $environment = Mage::getStoreConfig('payment/belluno_custompayment/environment');
+    if ($environment == 'sandbox') {
+        return 'https://ws-sandbox.bellunopag.com.br';
+      } else {
+        return 'https://api.belluno.digital';
+    }
+  }
 
   /**
    * Function to get installments

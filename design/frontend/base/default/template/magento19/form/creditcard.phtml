@@ -35,12 +35,12 @@
         document.getElementsByTagName("body")[0].appendChild(s2);
         document.getElementById("belluno").innerHTML =
             `var __kdt = __kdt || [];
-          __kdt.push({"public_key": "<?= $pubKey ?>"}); // A chave pública identifica a sua loja  
-            (function() {   
-              var kdt = document.createElement('script');   
-              kdt.id = 'kdtjs'; kdt.type = 'text/javascript';   
-              kdt.async = true;    kdt.src = 'https://i.k-analytix.com/k.js';   
-              var s = document.getElementsByTagName('body')[0];   
+          __kdt.push({"public_key": "<?= $pubKey ?>"}); // A chave pública identifica a sua loja
+            (function() {
+              var kdt = document.createElement('script');
+              kdt.id = 'kdtjs'; kdt.type = 'text/javascript';
+              kdt.async = true;    kdt.src = 'https://i.k-analytix.com/k.js';
+              var s = document.getElementsByTagName('body')[0];
               s.parentNode.insertBefore(kdt, s);
                })();`;
 
@@ -134,6 +134,10 @@
         <div>
             <legend class="legend-creditcard">Celular</legend>
             <input type="text" id="card_holder_cellphone" class="validate-cellphone" name="payment[card_holder_cellphone]" placeholder="(00) 00000-0000" onkeyup="maskPhone(this)" maxlength="15" />
+        </div>
+        <!-- INPUTS COM OS HASH'S -->
+        <div>
+            <input type="hidden" id="card_hash" name="payment[card_hash]">
         </div>
 
         <div class="div-installment">

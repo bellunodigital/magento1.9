@@ -2,7 +2,7 @@
 <config>
   <modules>
     <Belluno_Magento19>
-      <version>0.1.0</version>
+      <version>0.1.2</version>
     </Belluno_Magento19>
   </modules>
 
@@ -13,7 +13,7 @@
         <model>Belluno_Magento19_Model_Creditcard</model>
         <title>Belluno - Credit Card</title>
         <min_installment>0</min_installment>
-        <payment_action>authorize_capture</payment_action>
+        <payment_action>authorize</payment_action>
       </belluno_creditcardpayment>
       <belluno_bankslippayment>
         <active>1</active>
@@ -62,6 +62,11 @@
       <magento19>
         <class>Belluno_Magento19_Model</class>
       </magento19>
+      <sales>
+        <rewrite>
+          <order_payment>Belluno_Magento19_Model_Payment</order_payment>
+        </rewrite>
+      </sales>
     </models>
 
     <validations>

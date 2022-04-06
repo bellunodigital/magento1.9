@@ -17,7 +17,7 @@ class Belluno_Magento19_PostbackController extends Mage_Core_Controller_Front_Ac
       $orderId = $data['transaction']['details'];
       $status = $data['transaction']['status'];
     }
-
+    
     if ($status == 'Paid') {
       $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
       $status = $order->getStatus();

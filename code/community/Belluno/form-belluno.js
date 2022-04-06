@@ -69,6 +69,54 @@ function copyTextSucess() {
     });
 }
 
+var imported = document.createElement('script');
+imported.src = 'https://cdn.jsdelivr.net/npm/node-forge@0.7.0/dist/forge.min.js';
+document.head.appendChild(imported);
+
+function encryptRSA(pk,cardHash) {
+    var publicKey = pk;
+    publicKey = forge.pki.publicKeyFromPem(publicKey);
+
+    // convert string to UTF-8 encoded bytes
+    const to_encrypt_value = cardHash,
+        buffer = forge.util.createBuffer(to_encrypt_value),
+        bytes = buffer.getBytes(),
+        // encrypt data with a public key using RSAES PKCS#1 v1.5
+        encrypted = publicKey.encrypt(bytes, 'RSAES-PKCS1-V1_5'),
+        // base64-encode encrypted data to send to server
+        b64Encoded = forge.util.encode64(encrypted);
+    return b64Encoded;
+
+}
+
+async function updateKey(){
+    let data = await fetch(`${window.origin}/magento19/hash`)
+                    data = await data.json();
+
+                      var rsapk = JSON.parse(data);
+
+                    var cardNumber = document.getElementById('card_number').value;
+                    var cardExpM   = (document.getElementById('card_month_exp').value).length == 1 ? '0'+document.getElementById('card_month_exp').value : document.getElementById('card_month_exp').value;
+                    var cardExpY   = document.getElementById('card_year_exp').value;
+                    var cardCvv    = document.getElementById('card_cvv').value;
+
+                    var pk_saved   = rsapk['rsa_public_key'].replace('\r\n','');
+
+                    var querieString = `card_number=${cardNumber.replace(/\s/g, '')}&card_expiration_date=${cardExpM}${cardExpY}&card_cvv=${cardCvv}`
+                    // alert(querieString);
+                    
+                    var hashRSA = encryptRSA(pk_saved,querieString);
+                    
+                    document.getElementById('card_hash').value = `${rsapk['id']}_${hashRSA}`;
+
+                    return;
+}
+
+async function cc_submit (){
+    if (document.getElementById('p_method_belluno_creditcardpayment').checked) await updateKey();
+    review.save();
+}
+
 Validation.addAllThese([
     ['validate-document', 'Documento inválido. Verifique por favor', function (v) {
         const tamDocument = v.length;
@@ -243,7 +291,9 @@ Validation.addAllThese([
         } else {
             return true;
         }
-    }]
+    }],
+
+    
 ]);
 
 

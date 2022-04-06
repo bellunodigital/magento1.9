@@ -7,7 +7,7 @@ class Belluno_Magento19_Validations_RegionCodeAPI {
    * @param string $state
    * @return string
    */
-  public function getRegionCode($state) {
+  public function getRegionCode($state): string {
     $response = $this->getStates();
     
     foreach ($response as $states) {
@@ -19,7 +19,6 @@ class Belluno_Magento19_Validations_RegionCodeAPI {
     }
 
     Mage::throwException('Região Inaválida. Verifique por favor.');
-    return "";
   }
 
   /**

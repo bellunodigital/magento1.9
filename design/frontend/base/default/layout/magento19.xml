@@ -22,6 +22,14 @@
         </reference>
     </checkout_onepage_success>
 
+    <checkout_onepage_review>
+        <reference name="checkout.onepage.review.button">
+            <action method="setTemplate">
+                <template>magento19/checkout/onepage/review/button.phtml</template>
+            </action>
+        </reference>
+    </checkout_onepage_review>
+
     <sales_order_view>
         <reference name="content">
             <block type="magento19/order_info" template="magento19/info.phtml" />
