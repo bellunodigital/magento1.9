@@ -74,10 +74,16 @@ class Belluno_Magento19_Model_BankSlip_CreateRequest {
 
     foreach ($items as $item) {
       if ($item->getProductType() == 'simple' || $item->getProductType() == 'grouped') {
+        if ($item->getPrice() == 0) {
+          $parentItem = $item->getParentItem();
+          $price = $parentItem->getPrice();
+        } else {
+          $price = $item->getPrice();
+        }
         $array[] = [
           self::PRODUCT_NAME => $item->getName(),
           self::QUANTITY => $item->getQty(),
-          self::UNIT_VALUE => $item->getPrice()
+          self::UNIT_VALUE => $price
         ];
       }
     }
