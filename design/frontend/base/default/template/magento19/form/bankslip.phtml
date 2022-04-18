@@ -1,22 +1,21 @@
 <fieldset class="form-bankslip" id="payment_form_<?= $this->getMethodCode() ?>" style="display:none">
-    <style>
-        .form-creditcard {
-            border: 1px solid gray;
-        }
-
-        .div-inputs {
-            border: 8px solid transparent;
-        }
-    </style>
-
-    <?php
-    $captureTax = $this->getFieldCaptureTax();
-    ?>
-
-    <?php if ($captureTax == true) : ?>
-        <div class="div-inputs">
-            <legend class="legend-bankslip">Cpf/Cnpj do cliente</legend>
-            <input type="text" id="client_document" onkeyup="maskDocument(this)" maxlength="18" class="validate-document" name="payment[client_document]"/>
-        </div>
-    <?php endif; ?>
+    <ul class="form-list">
+        <li class="form-payment">
+            <ul>
+                <?php
+                $captureTax = $this->getFieldCaptureTax();
+                ?>
+                <?php if ($captureTax == true) : ?>
+                    <li class="fields">
+                        <div class="field">
+                            <label for="card_holder_cellphone" class="required">CPF/CNPJ do cliente <em>*</em></label>
+                            <div class="input-box">
+                                <input type="text" id="client_document" placeholder="Digite aqui" class="input-text required-entry validate-document" name="payment[client_document]" onkeyup="maskDocument(this)" maxlength="18" />
+                            </div>
+                        </div>
+                    </li>
+                <?php endif; ?>
+            </ul>
+        </li>
+    </ul>
 </fieldset>

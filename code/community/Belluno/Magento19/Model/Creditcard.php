@@ -40,17 +40,18 @@ class Belluno_Magento19_Model_Creditcard extends Mage_Payment_Model_Method_Abstr
      */
     public function saveAssignData($data)
     {
+        $parts = explode('/', $data['expires_at']);
         $array = [
             'method' => $data['method'],
-            'client_document' => $data['client_document'],
+            'client_document' => $data['card_holder_document'],
             'visitor_id' => $data['visitor_id'],
             'card_holder_document' => $data['card_holder_document'],
             'card_holder_cellphone' => $data['card_holder_cellphone'],
             'card_holder_birth' => $data['card_holder_birth'],
             'card_number' => $data['card_number'],
             'name_on_card' => $data['name_on_card'],
-            'card_month_exp' => $data['card_month_exp'],
-            'card_year_exp' => $data['card_year_exp'],
+            'card_month_exp' => $parts[0],
+            'card_year_exp' => $parts[1],
             'cc_cvv' => $data['cc_cvv'],
             'card_installment' => $data['card_installment'],
             'card_hash' => $data['card_hash']
@@ -210,9 +211,10 @@ class Belluno_Magento19_Model_Creditcard extends Mage_Payment_Model_Method_Abstr
             $cardHolderDocument = $clientDocument;
         }
 
-        $isValid = $documentValidator->validateDocument($clientDocument);
+        $isValid = $documentValidator->validateDocument($data['card_holder_document']);
         if ($isValid == false) {
-            Mage::throwException(__('Documento do cliente inválido. Verifique por favor.'));
+            // Mage::throwException(__('Documento do cliente inválido. Verifique por favor.'));
+            Mage::throwException($data['card_holder_document']);
         }
         $isValid = $documentValidator->validateDocument($cardHolderDocument);
         if ($isValid == false) {
