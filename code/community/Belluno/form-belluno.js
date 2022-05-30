@@ -132,8 +132,11 @@ async function updateKey() {
 }
 
 async function cc_submit() {
-  if (document.getElementById("p_method_belluno_creditcardpayment").checked)
-    await updateKey();
+  var is_belluno = document.getElementById("p_method_belluno_creditcardpayment");
+  if(is_belluno){
+    if (is_belluno.checked) await updateKey();
+  }
+
   review.save();
 }
 
