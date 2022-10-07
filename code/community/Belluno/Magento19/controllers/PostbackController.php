@@ -2,35 +2,22 @@
 
 class Belluno_Magento19_PostbackController extends Mage_Core_Controller_Front_Action {
 
-   /**
-   * Function to get postback from belluno @author Vitor <web@tryideas.com.br>
+  /**
+   * Function to get postback from belluno
    */
   public function indexAction() {
-      
-    
     $post = new Zend_Controller_Request_Http();
     $data = $post->getRawBody();
     $data = json_decode($data, true);
-    $date_file = Mage::getModel('core/date')->gmtDate('Y-m-d');
-    Mage::log( var_export( $data ,true) , Zend_Log::DEBUG , $date_file . '-bulluno-payment.log', true);
-    
-    $orderId = null;
-    $status = null;
-    
-    if(isset($data['transaction']) && count($data['transaction']) > 0){
-        $orderId = $data['transaction']['details'];
-        $status = $data['transaction']['status'];
-    
-    }else if(isset($data['bankslip']) && count($data['bankslip']) > 0){
-        $orderId = $data['bankslip']['document_code'];
-        $status = $data['bankslip']['status'];
-    }
-    
-    
+
+    $orderId = $data['bankslip']['document_code'];
+    $status = $data['bankslip']['status'];
+
     if (empty($orderId) || empty($status)) {
-      return false;
+      $orderId = $data['transaction']['details'];
+      $status = $data['transaction']['status'];
     }
-   
+    
     if ($status == 'Paid') {
       $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
       $status = $order->getStatus();
@@ -49,15 +36,16 @@ class Belluno_Magento19_PostbackController extends Mage_Core_Controller_Front_Ac
       $order->save();
     }
 
-    
-    if (isset($status) && strlen($status) > 1 && $status == 'Refused') {
-      $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
-        
-      $order->setState(Mage_Sales_Model_Order::STATE_CANCELED, true);
-      $order->setStatus(Mage_Sales_Model_Order::STATE_CANCELED, true);
-      $order->save();
+    if (isset($data['transaction']['refunds']['status'])) {
+      if (!empty($data['transaction']['refunds']['amount'])) {
+        $amount = $data['transaction']['refunds']['amount'];
+        if ($amount != ' ' && $amount != '0' && $amount != 0) {
+          $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
+          $order->setState(Mage_Sales_Model_Order::STATE_CANCELED, true);
+          $order->setStatus(Mage_Sales_Model_Order::STATE_CANCELED, true);
+          $order->save();
+        }
+      }
     }
-  
   }
-  
 }

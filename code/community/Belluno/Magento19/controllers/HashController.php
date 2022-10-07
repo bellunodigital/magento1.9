@@ -34,8 +34,6 @@ class Belluno_Magento19_HashController extends Mage_Core_Controller_Front_Action
       CURLOPT_TIMEOUT => 60,
       CURLOPT_FOLLOWLOCATION => TRUE,
       CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-      CURLOPT_SSL_VERIFYHOST => false,
-      CURLOPT_SSL_VERIFYPEER => false,
       CURLOPT_CUSTOMREQUEST => "GET",
       CURLOPT_HTTPHEADER => [
         "Content-Type:application/json",

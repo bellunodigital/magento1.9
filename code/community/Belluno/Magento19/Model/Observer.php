@@ -39,25 +39,14 @@ class Belluno_Magento19_Model_Observer
 
         if ($method == 'belluno_creditcardpayment' || $method == 'belluno_bankslippayment') {
             if ($status != 'Paid') {
-                //$order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true);
-				$order->setState(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT, true);
+                $order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true);
                 $order->setStatus(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT, true);
                 $order->save();
             } else {
                 $order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true);
-                $order->setStatus(Mage_Sales_Model_Order::STATE_PROCESSING, true);
+                $order->setStatus(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT, true);
                 $order->save();
             }
-			
-		
-            $comments = $order->getStatusHistoryCollection(true);
-            foreach($comments as $c) {
-                if($c->getComment() != null && strpos($c->getComment(), 'autorizado') !== false) {
-                    $c->setData('status', 'pending_payment')->save();
-                }
-            }
-			
-			
         }
     }
 

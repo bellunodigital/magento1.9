@@ -59,8 +59,8 @@ class Belluno_Magento19_Service_Connector
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
         Mage::log("[-- RESPONSE BELLUNO --] $response", null, 'belluno.log', true);
-        //Mage::log( var_export([ $response, $httpCode ] ,true) , Zend_Log::DEBUG , 'bulluno-canceled.log',true);
-        if (($httpCode > 200 || $httpCode < 200) &&  $httpCode != 422) {
+
+        if ($httpCode > 200 || $httpCode < 200) {
             Mage::throwException("Algo não ocorreu bem. Por favor verifique suas informações.");
         }
 
