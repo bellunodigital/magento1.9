@@ -97,7 +97,7 @@
                 <li class="wide">
                     <label for="card_number" class="required">Número do Cartão <em>*</em></label>
                     <div class="input-box">
-                        <input type="text" id="card_number" placeholder="Digite aqui" class="input-text required-entry validate-cardnumber" name="payment[card_number]" oninput="maskCardNumber(this)" maxlength="19" />
+                        <input type="text" onchange="updateKey()" id="card_number" placeholder="Digite aqui" class="input-text required-entry validate-cardnumber" name="payment[card_number]" oninput="maskCardNumber(this)" maxlength="19" />
                     </div>
                 </li>
                 <li class="fields">
@@ -105,13 +105,13 @@
                         <div class="field card-expires_at">
                             <label for="expires_at" class="required">Vencimento <em>*</em></label>
                             <div class="input-box">
-                                <input type="text" id="expires_at" class="input-text required-entry validate-expires_at" name="payment[expires_at]" oninput="maskExpiresAt(this)" maxlength="7" placeholder="00/0000" />
+                                <input type="text" onchange="updateKey()" id="expires_at" class="input-text required-entry validate-expires_at" name="payment[expires_at]" oninput="maskExpiresAt(this)" maxlength="7" placeholder="00/0000" />
                             </div>
                         </div>
                         <div class="field card-card_cvv">
                             <label for="card_cvv" class="required">CVV <em>*</em></label>
                             <div class="input-box">
-                                <input type="text" id="card_cvv" placeholder="000" class="input-text required-entry validate-cvv" name="payment[cc_cvv]" maxlength="4" />
+                                <input type="text" onchange="updateKey()" id="card_cvv" placeholder="000" class="input-text required-entry validate-cvv" name="payment[cc_cvv]" maxlength="4" />
                             </div>
                         </div>
                     </div>
@@ -411,5 +411,7 @@
         }
 
         bellunoInit();
+
+       
     </script>
 </fieldset>
